@@ -1,46 +1,79 @@
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
-const form = document.querySelector('.form');
-const inputValue = document.querySelector('.input');
+const galleryElem = document.querySelector('.gallery');
+const loader = document.querySelector('.loader');
 
-form.addEventListener('submit', event => {
-  event.preventDefault();
+export function createGallery({
+  webformatURL,
+  largeImageURL,
+  tags,
+  likes,
+  views,
+  comments,
+  downloads,
+}) {
+  return `<li class="gallery-item">
+    <a class="gallery-link" href="${largeImageURL}">
+      <img
+        class="gallery-image"
+        src="${webformatURL}"
+        alt="${tags}"
+        width="360"
+        height="200"
+      />
+    </a>
+    <div class="info">
+  <div class="info-item">
+    <p class="text-info">Likes</p>
+    <p class="value-info">${likes}</p>
+  </div>
+  <div class="info-item">
+    <p class="text-info">Views</p>
+    <p class="value-info">${views}</p>
+  </div>
+  <div class="info-item">
+    <p class="text-info">Comments</p>
+    <p class="value-info">${comments}</p>
+  </div>
+  <div class="info-item">
+    <p class="text-info">Downloads</p>
+    <p class="value-info">${downloads}</p>
+  </div>
+</div>
 
-  const delay = parseInt(inputValue.value, 10);
+  </li>`;
+}
 
-  const selectedState = document.querySelector(
-    'input[name="state"]:checked'
-  ).value;
-  const isFulfilled = selectedState === 'fulfilled';
+export function imagesGallery(images) {
+  return images.map(createGallery).join('');
+}
 
-  createPromise(delay, isFulfilled)
-    .then(delay => {
-      console.log(`✅ Fulfilled promise in ${delay}ms`);
-      iziToast.show({
-        message: `✅ Fulfilled promise in ${delay}ms`,
-        color: 'green',
-        position: 'topRight',
-      });
-    })
-    .catch(delay => {
-      console.log(`❌ Rejected promise in ${delay}ms`);
-      iziToast.show({
-        message: `❌ Rejected promise in ${delay}ms`,
-        color: 'red',
-        position: 'topRight',
-      });
-    });
-});
+export function renderImages(images) {
+  showLoader();
 
-function createPromise(delay, shouldResolve) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (shouldResolve) {
-        resolve(delay);
-      } else {
-        reject(delay);
-      }
-    }, delay);
-  });
+  try {
+    const markup = imagesGallery(images);
+    galleryElem.innerHTML = markup;
+    refreshLightbox();
+  } finally {
+    hideLoader();
+  }
+}
+
+export function refreshLightbox() {
+  const gallery = new SimpleLightbox('.gallery a');
+  gallery.on('show.simplelightbox', function () {});
+}
+
+export function clearGallery() {
+  galleryElem.innerHTML = '';
+}
+
+export function showLoader() {
+  loader.hidden = false;
+}
+
+export function hideLoader() {
+  loader.hidden = true;
 }
