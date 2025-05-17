@@ -18,5 +18,3 @@ export default function getImagesByQuery(query) {
     })
     .then(res => res.data);
 }
-
-//===================================================================//
