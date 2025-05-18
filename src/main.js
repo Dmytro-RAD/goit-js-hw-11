@@ -7,6 +7,7 @@ import {
   createGallery,
   imagesGallery,
   renderImages,
+  initLightbox,
   refreshLightbox,
   clearGallery,
   showLoader,
@@ -16,6 +17,8 @@ import {
 //===================================================================//
 const formElem = document.querySelector('.form');
 const inputElem = document.querySelector('.input-form');
+
+initLightbox();
 
 formElem.addEventListener('submit', event => {
   event.preventDefault();

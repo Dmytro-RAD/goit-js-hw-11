@@ -45,6 +45,15 @@ export function createGallery({
   </li>`;
 }
 
+let lightbox;
+
+export function initLightbox() {
+  lightbox = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+  });
+}
+
 export function imagesGallery(images) {
   return images.map(createGallery).join('');
 }
@@ -62,8 +71,9 @@ export function renderImages(images) {
 }
 
 export function refreshLightbox() {
-  const gallery = new SimpleLightbox('.gallery a');
-  gallery.on('show.simplelightbox', function () {});
+  if (lightbox) {
+    lightbox.refresh();
+  }
 }
 
 export function clearGallery() {
