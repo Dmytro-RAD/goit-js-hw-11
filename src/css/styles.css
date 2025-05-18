@@ -48,7 +48,7 @@ ul {
   animation: percentage 10s linear infinite;
 }
 
-[hidden] {
+.loader[hidden] {
   display: none !important;
 }
 
